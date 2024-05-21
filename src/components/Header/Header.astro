@@ -1,0 +1,27 @@
+---
+import ContentContainer from "../ContentContainer.astro"
+import NavItem from "./NavItem.astro"
+
+const links: {text: string, href: string}[] = [
+    {
+        href: '/',
+        text: 'Home'
+    },
+    {
+        href: '/about-us',
+        text: 'About'
+    }
+]
+---
+
+
+<header class="sticky top-0">
+    <ContentContainer className="flex-row justify-between bg-blue-300">
+        <div class="flex items-center text-xl font-bold">BlogLogo</div>
+        <nav>
+            <ul class="flex">
+                {links.map(link => <NavItem href={link.href} text={link.text} />)}
+            </ul>
+        </nav>
+    </ContentContainer>
+</header>

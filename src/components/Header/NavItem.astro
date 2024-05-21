@@ -1,0 +1,15 @@
+---
+    interface Props {
+        href: string,
+        text: string,
+    }
+
+    const {href, text} = Astro.props
+---
+
+
+<li>
+    <a class="p-2 py-5 sm:py-2 block text-lg sm:text-base" href={href}>
+        {text}
+    </a>
+</li>

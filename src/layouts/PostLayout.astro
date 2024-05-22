@@ -1,0 +1,46 @@
+---
+import type { CollectionEntry } from 'astro:content'
+import MainLayout from './MainLayout.astro'
+import ContentContainer from '@components/ContentContainer.astro'
+import { Icon } from 'astro-icon/components'
+import { Image } from 'astro:assets'
+import { getEntries } from 'astro:content'
+import CommonArticleCard from '@components/Cards/CommonArticleCard.astro'
+
+interface Props {
+    entry: CollectionEntry<"posts">
+}
+
+const {entry} = Astro.props
+const {date, description, image, relatedPosts, tags, title} = entry.data
+const {Content} = await entry.render()
+const posts = await getEntries(relatedPosts)
+---
+
+<MainLayout title={entry.data.title}>
+        <ContentContainer className='py-5 text-center max-w-3xl'>
+            <div class=" relative overflow-hidden rounded-md aspect-[9/3]">
+                <div class="z-20 relative text-white bg-black/50 p-5 h-full flex flex-col gap-2 items-center justify-center">
+                    <h1 class="text-5xl font-bold">{title}</h1>
+                    <p>{description}</p>
+                    <p class="flex gap-2 items-center justify-center"><Icon name="calendar" /> {date.toLocaleDateString('pl-PL', {year: 'numeric', month: 'numeric', day: 'numeric'})}</p>
+                    <div class="flex gap-3 items-center justify-center">
+                        <Icon name="folder" />
+                        <div class="flex gap-2">{tags.map(tag => <a href={`/tag/${tag}`}>{tag}</a>)}</div>
+                    </div>
+                </div>
+                <Image class="object-cover absolute inset-0 w-full h-full z-10" loading="eager" src={image} alt={''} width={728} />
+            </div>
+            <div class="prose-sm text-left">
+                <Content />
+            </div>
+            <div class="grid gap-2">
+                <h2 class="font-bold text-3xl">You might also enjoy this</h2>
+                <div class="grid sm:grid-cols-3 gap-5">
+                    {posts.map(({slug, data:  {title, description, image}}) => 
+                        <CommonArticleCard image={image} excerpt={description} slug={slug} heading={title} />
+                    )}
+                </div>
+            </div>
+        </ContentContainer>
+</MainLayout>

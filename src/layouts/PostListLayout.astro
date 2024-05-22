@@ -1,0 +1,37 @@
+---
+import type { Page } from 'astro';
+import type { CollectionEntry } from 'astro:content';
+import MainLayout from './MainLayout.astro';
+import ContentContainer from '@components/ContentContainer.astro';
+import CommonArticleCard from '@components/Cards/CommonArticleCard.astro';
+import HighlightedArticleCard from '@components/Cards/HighlightedArticleCard.astro';
+import Pagination from '@components/Pagination/Pagination.astro';
+
+interface Props {
+    page: Page<CollectionEntry<"posts">>,
+}
+
+const {page} = Astro.props
+let baseUrl = page.url.current.endsWith(String(page.currentPage)) ? page.url.current.slice(0, -1) : `${page.url.current}/`
+baseUrl = baseUrl === '//' ? '/' : baseUrl
+
+const highlightedArticleGrid = ['md:row-span-2 md:col-span-7', 'md:col-span-5', 'md:col-span-5']
+---
+
+<MainLayout title=`Articles | ${page.currentPage}`>
+    <ContentContainer className='py-5'>
+        {page.currentPage === 1 &&  <div class="md:border-b-0">
+            <h1 class="font-bold text-3xl md:hidden pb-2">Highlighted articles</h1>
+            <div class="grid md:grid-cols-12 md:grid-rows-2 gap-5 md:h-96">
+                {page.data.slice(0,3).map((post, i) => <HighlightedArticleCard className={`${highlightedArticleGrid[i]}`} heading={post.data.title} image={post.data.image} excerpt={post.data.description} slug={post.slug} />)}
+            </div>
+        </div>}
+        <div>
+            <div class="pb-2 font-bold text-2xl md:hidden">Other posts</div>
+            <div class="grid gap-5 md:grid-cols-3">
+                {page.data.slice(page.currentPage === 1 ? 3 :0).map((post) => <CommonArticleCard heading={post.data.title} image={post.data.image} excerpt={post.data.description} slug={post.slug} />)}
+            </div>
+        </div>
+        <Pagination url={baseUrl} previousPage={page.url.prev} nextPage={page.url.next} currentPage={page.currentPage} numberOfPages={page.lastPage} />
+    </ContentContainer>
+</MainLayout>

@@ -1,0 +1,34 @@
+---
+    import type {CardProps} from '@myTypes/index'
+import { Image } from 'astro:assets'
+import { cn } from 'src/utils'
+
+interface Props 
+    {
+        excerpt: string,
+        heading: string,
+        slug: string,
+        image: {
+            src: string,
+            width: number,
+            height: number,
+            format: "png" | "jpg" | "jpeg" | "tiff" | "webp" | "gif" | "svg" | "avif",
+        },
+        className: string,
+    }
+
+const {excerpt, heading, slug, image, className} = Astro.props
+---
+
+<article class={cn("relative overflow-hidden aspect-video md:aspect-auto md:h-full rounded-md", className)}>
+    <a href={slug} class="block w-full h-full" >
+        <div class="w-full h-full ">
+            <Image class="w-full h-full object-cover" src={image} alt="" loading="eager" />
+        </div>
+        <div class="bg-black/35 absolute w-full h-full inset-0"></div>
+        <div class="grid gap-2 text-white absolute bottom-5 left-5 pr-5">
+            <p class="font-bold text-lg">{heading}</p>
+            <p class="text-zinc-100">{excerpt}</p>
+        </div>
+    </a>
+</article>

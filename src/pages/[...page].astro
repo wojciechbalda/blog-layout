@@ -1,0 +1,23 @@
+---
+import type { GetStaticPaths } from "astro";
+import { getCollection } from "astro:content";
+import PostLayout from "src/layouts/PostLayout.astro";
+import PostListLayout from "src/layouts/PostListLayout.astro";
+import { sortByDate } from "src/utils";
+
+export const getStaticPaths = (async ({ paginate }) => {
+	const collection = await getCollection("posts");
+	collection.sort(sortByDate)
+	return [
+		...paginate(collection, {pageSize: 9}),
+		...collection.map((entry) => ({
+			params: { page: entry.slug },
+			props: { entry: entry },
+		})),
+	];
+}) satisfies GetStaticPaths;
+
+const {page, entry} = Astro.props
+---
+
+{entry ? <PostLayout entry={entry} /> : <PostListLayout page={page} />}

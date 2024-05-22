@@ -1,0 +1,22 @@
+---
+import type { GetStaticPaths } from "astro";
+import { getCollection } from "astro:content";
+import PostListLayout from "src/layouts/PostListLayout.astro";
+import { sortByDate } from "src/utils";
+
+export const getStaticPaths  = (async ({ paginate }) => {
+	const allPosts = await getCollection("posts");
+  const uniqueTags = [...new Set(allPosts.map((post) => post.data.tags).flat())];
+
+  return uniqueTags.flatMap((tag) => {
+    const filteredPosts = allPosts.filter((post) =>
+      post.data.tags.includes(tag)
+    ).sort(sortByDate);
+    return paginate(filteredPosts, {params: {tag}, pageSize: 9})
+  });
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props;
+---
+
+<PostListLayout page={page} />

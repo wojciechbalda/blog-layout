@@ -1,0 +1,15 @@
+---
+import { Icon } from 'astro-icon/components'
+
+ interface Props {
+    direction: 'left' | 'right'
+    url?: string,
+    className: string,
+ }
+
+ const {direction, url, className} = Astro.props
+---
+
+{!url && <div class={className}><Icon name={direction === 'left' ? 'step-back' : 'step-forward'} /></div>}
+
+{url && <a aria-label={direction === "left" ? "previous page" : "next page"} class={className} href={url}><Icon name={direction === 'left' ? 'step-back' : 'step-forward'} /></a>}

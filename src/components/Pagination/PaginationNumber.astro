@@ -1,0 +1,16 @@
+---
+import { cn } from 'src/utils'
+
+interface Props {
+    value: number,
+    href: string,
+    className: string,
+    isActive: boolean
+}
+
+const {href, value, className, isActive} = Astro.props
+---
+
+
+<a href={href} class={cn(className, {"bg-blue-400": isActive})}>{value}</a>
+

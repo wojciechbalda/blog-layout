@@ -1,0 +1,26 @@
+---
+import { createPagination, generateHref } from 'src/utils'
+import PagintaionArrow from './PagintaionArrow.astro'
+import PaginationNumber from './PaginationNumber.astro'
+import PaginationPlaceholder from './PaginationPlaceholder.astro'
+
+    interface Props {
+        url: string,
+        numberOfPages: number,
+        currentPage: number,
+        nextPage?: string,
+        previousPage?: string,
+    }
+
+    const {currentPage, numberOfPages, url, nextPage, previousPage} = Astro.props
+    const arr = createPagination(numberOfPages, currentPage)
+    const className = "flex justify-center items-center bg-blue-300 aspect-square w-10 font-bold text-sm rounded-md"
+
+---
+
+<div class="flex gap-2 self-center scale-75 sm:scale-100">
+    <PagintaionArrow url={previousPage} className={className} direction='left' />
+    {arr.map((el) => typeof el === 'string' ? <PaginationPlaceholder className={className} /> : <PaginationNumber isActive={currentPage === el} className={className} href={generateHref(url, el)} value={el}  />)}
+    <PagintaionArrow url={nextPage} className={className} direction='right' />
+</div>
+

@@ -3,12 +3,13 @@ import { cn } from '../../utils'
 interface Props {
     icon: string,
     href: string,
-    className: string
+    className: string,
+    label: string,
  }
- const {className, href, icon} = Astro.props
+ const {className, href, icon, label} = Astro.props
  import { Icon } from 'astro-icon/components'
 ---
 
-<a href={href} rel="nofollow" class={cn("text-white rounded-full aspect-square w-10 flex items-center justify-center", className)}>
+<a aria-label={label} href={href} rel="nofollow" class={cn("text-white rounded-full aspect-square w-10 flex items-center justify-center", className)}>
     <Icon name={icon} />
 </a>

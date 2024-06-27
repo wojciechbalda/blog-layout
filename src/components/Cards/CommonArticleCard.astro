@@ -1,5 +1,4 @@
 ---
-    import type {CardProps} from '@myTypes/index'
 import { Icon } from 'astro-icon/components'
 import { Image } from 'astro:assets'
 
@@ -21,9 +20,9 @@ import { Image } from 'astro:assets'
 
 <article class="flex flex-col justify-between gap-2">
     <div class="grid gap-2">
-        <div class="rounded-md w-full overflow-hidden relative">
+        <div class="rounded-md w-full overflow-hidden aspect-video relative">
             <div class="bg-black/35 absolute inset-0"></div>
-        <Image class="w-full h-full object-cover" alt="" src={image} loading="eager" />
+            <Image class="w-full h-full object-cover" alt="" src={image} loading="eager" />
         </div>
         <div class="grid gap-2 text-center">
             <p class="font-bold text-lg">{heading}</p>
